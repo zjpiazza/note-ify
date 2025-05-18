@@ -7,11 +7,6 @@ defmodule NoteIfy.Application do
 
   @impl true
   def start(_type, _args) do
-    unless Mix.env() == :prod do
-      Dotenv.load()
-      Mix.Task.run("loadconfig")
-    end
-
     children = [
       NoteIfyWeb.Telemetry,
       {DNSCluster, query: Application.get_env(:note_ify, :dns_cluster_query) || :ignore},
