@@ -7,14 +7,19 @@ defmodule NoteIfy.Application do
 
   @impl true
   def start(_type, _args) do
+    unless Mix.env() == :prod do
+      Dotenv.load()
+      Mix.Task.run("loadconfig")
+    end
+
     children = [
       NoteIfyWeb.Telemetry,
       {DNSCluster, query: Application.get_env(:note_ify, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: NoteIfy.PubSub},
       # Start the Finch HTTP client for sending emails
       {Finch, name: NoteIfy.Finch},
-      # Start a worker by calling: NoteIfy.Worker.start_link(arg)
-      # {NoteIfy.Worker, arg},
+      # Start the Finch HTTP client for Clerk auth
+      {Finch, name: ClerkHTTP},
       # Start to serve requests, typically the last entry
       NoteIfyWeb.Endpoint
     ]

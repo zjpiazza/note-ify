@@ -9,7 +9,7 @@ import Config
 config :note_ify, NoteIfyWeb.Endpoint,
   # Binding to loopback ipv4 address prevents access from other machines.
   # Change to `ip: {0, 0, 0, 0}` to allow access from other machines.
-  http: [ip: {127, 0, 0, 1}, port: 4000],
+  http: [ip: {127, 0, 0, 1}, port: 5000],
   check_origin: false,
   code_reloader: true,
   debug_errors: true,
@@ -18,6 +18,15 @@ config :note_ify, NoteIfyWeb.Endpoint,
     esbuild: {Esbuild, :install_and_run, [:note_ify, ~w(--sourcemap=inline --watch)]},
     tailwind: {Tailwind, :install_and_run, [:note_ify, ~w(--watch)]}
   ]
+
+# Configure Clerk for authentication using the standard environment variable names
+config :clerk,
+  api_key: System.get_env("CLERK_SECRET_KEY", "YOUR_TEST_API_KEY"),
+  frontend_api: System.get_env("CLERK_PUBLISHABLE_KEY", "YOUR_FRONTEND_API_KEY"),
+  webhook_secret: System.get_env("CLERK_WEBHOOK_SECRET"),
+  domain: System.get_env("CLERK_DOMAIN", "your-app.clerk.accounts.dev")
+
+# Note: We now use .env file for environment variables instead of dev.secret.exs
 
 # ## SSL Support
 #
@@ -59,7 +68,7 @@ config :note_ify, dev_routes: true
 config :logger, :console, format: "[$level] $message\n"
 
 # Set a higher stacktrace during development. Avoid configuring such
-# in production as building large stacktraces may be expensive.
+# in production as building large stacktrace may be expensive.
 config :phoenix, :stacktrace_depth, 20
 
 # Initialize plugs at runtime for faster development compilation

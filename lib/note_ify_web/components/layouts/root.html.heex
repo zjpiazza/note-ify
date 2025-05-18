@@ -1,17 +1,24 @@
 <!DOCTYPE html>
-<html lang="en" class="[scrollbar-gutter:stable]">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="csrf-token" content={get_csrf_token()} />
-    <.live_title default="NoteIfy" suffix=" · Phoenix Framework">
-      {assigns[:page_title]}
-    </.live_title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="clerk-publishable-key" content={Application.get_env(:clerk, :frontend_api) || ""} />
+    <title>NoteIfy</title>
     <link phx-track-static rel="stylesheet" href={~p"/assets/app.css"} />
+    <!-- Load Clerk authentication SDK -->
+    <script
+      async
+      crossorigin="anonymous"
+      data-clerk-publishable-key={Application.get_env(:clerk, :frontend_api) || ""}
+      src="https://clerk.accounts.dev/npm/@clerk/clerk-js@latest/dist/clerk.browser.js"
+    >
+    </script>
     <script defer phx-track-static type="text/javascript" src={~p"/assets/app.js"}>
     </script>
   </head>
-  <body class="bg-white">
+  <body>
     {@inner_content}
   </body>
 </html>

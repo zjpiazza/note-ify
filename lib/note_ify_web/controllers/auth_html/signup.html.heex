@@ -1,0 +1,79 @@
+<div class="min-h-screen flex items-center justify-center bg-base-200">
+  <div class="card w-full max-w-md bg-base-100 shadow-lg">
+    <div class="card-body">
+      <div class="text-center mb-6">
+        <h2 class="text-2xl font-bold">Create an Account</h2>
+        <p class="text-base-content/60 mt-2">Sign up to start using Note-ify</p>
+      </div>
+      
+<!-- Clerk will mount its sign-up component here -->
+      <div id="sign-up-container"></div>
+
+      <div class="mt-6 text-center text-sm text-base-content/60">
+        <p>
+          Already have an account?
+          <a href="/login" class="text-primary hover:underline">Sign in</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Wait for the DOM to be fully loaded
+  window.addEventListener('DOMContentLoaded', function() {
+    try {
+      const signUpContainer = document.getElementById('sign-up-container');
+      if (!signUpContainer) {
+        console.error('Sign-up container not found');
+        return;
+      }
+
+      const publishableKey = "<%= Application.get_env(:clerk, :frontend_api) %>";
+      if (!publishableKey || publishableKey === "YOUR_FRONTEND_API_KEY") {
+        console.error('Clerk publishable key not configured');
+        signUpContainer.innerHTML = '<div class="alert alert-warning">Authentication service not configured. Please contact the administrator.</div>';
+        return;
+      }
+      
+      // Initialize and load Clerk following the exact pattern from docs
+      const clerk = new Clerk(publishableKey);
+      clerk.load().then(() => {
+        // Check if user is already signed in
+        if (clerk.user) {
+          window.location.href = '/dashboard';
+          return;
+        }
+
+        // Mount the sign-up component to the container
+        clerk.mountSignUp(signUpContainer, {
+          // Customize the appearance
+          appearance: {
+            elements: {
+              rootBox: "mx-auto w-full",
+              card: "",
+              formButtonPrimary: "btn btn-primary w-full",
+              footerAction: "text-primary hover:underline",
+              socialButtonsBlockButton: "border border-base-300 bg-base-100 hover:bg-base-200",
+              socialButtonsBlockButtonText: "font-medium",
+              formFieldInput: "input input-bordered w-full",
+              formFieldLabel: "text-sm font-medium mb-1 block",
+              dividerText: "text-base-content/60 text-sm",
+              dividerLine: "bg-base-300"
+            }
+          },
+          // Redirect after sign up
+          redirectUrl: '/dashboard',
+          // Configure sign-up flow
+          signUpUrl: '/signup',
+          afterSignUpUrl: '/dashboard'
+        });
+      }).catch(error => {
+        console.error('Error loading Clerk:', error);
+        signUpContainer.innerHTML = '<div class="alert alert-error">Error loading authentication. Please try again later.</div>';
+      });
+    } catch (error) {
+      console.error('Initialization error:', error);
+    }
+  });
+</script>

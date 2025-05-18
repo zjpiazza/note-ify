@@ -40,7 +40,7 @@ defmodule NoteIfyWeb do
     quote do
       use Phoenix.Controller,
         formats: [:html, :json],
-        layouts: [html: NoteIfyWeb.Layouts]
+        layouts: [html: {NoteIfyWeb.Layouts, :app}]
 
       use Gettext, backend: NoteIfyWeb.Gettext
 

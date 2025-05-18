@@ -1,0 +1,8 @@
+{
+  "name": "note-ify",
+  "version": "1.0.0",
+  "description": "NoteIfy application",
+  "dependencies": {
+    "daisyui": "^4.4.19"
+  }
+} 

@@ -35,3 +35,11 @@ note_ify-*.tar
 npm-debug.log
 /assets/node_modules/
 
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Ignore secret config files
+/config/*.secret.exs
+

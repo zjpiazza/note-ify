@@ -40,6 +40,9 @@ defmodule NoteIfyWeb.Endpoint do
   plug Plug.RequestId
   plug Plug.Telemetry, event_prefix: [:phoenix, :endpoint]
 
+  # Add Custom Headers plug for CSP
+  plug NoteIfyWeb.Plugs.SecurityHeaders
+
   plug Plug.Parsers,
     parsers: [:urlencoded, :multipart, :json],
     pass: ["*/*"],

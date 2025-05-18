@@ -1,0 +1,108 @@
+<!-- Page content -->
+<div class="p-6 bg-base-200 min-h-screen">
+  <div class="flex flex-col gap-2 mb-6">
+    <h1 class="text-3xl font-bold">Billing & Subscription</h1>
+    <p class="text-base-content/60">Manage your subscription and view billing history</p>
+  </div>
+
+  <div class="grid gap-6 md:grid-cols-2 mb-6">
+    <!-- Current Plan -->
+    <div class="card bg-base-100 shadow-sm">
+      <div class="card-body">
+        <h2 class="card-title">Current Plan</h2>
+        <p class="text-base-content/60">
+          You are currently on the {@current_plan.name} plan
+        </p>
+        <div class="flex items-baseline justify-between mt-4">
+          <div>
+            <span class="text-3xl font-bold">${@current_plan.price}</span>
+            <span class="text-base-content/60"> / month</span>
+          </div>
+          <span class="badge badge-success">{@current_plan.status}</span>
+        </div>
+        <ul class="mt-4 space-y-2 text-sm">
+          <%= for feature <- @current_plan.features do %>
+            <li class="flex items-center">
+              <span class="mr-2">✅</span>
+              <span>{feature}</span>
+            </li>
+          <% end %>
+        </ul>
+        <div class="card-actions mt-4">
+          <button class="btn btn-outline w-full">Manage Subscription</button>
+        </div>
+      </div>
+    </div>
+    
+<!-- Upgrade Plan -->
+    <div class="card bg-base-100 shadow-sm">
+      <div class="card-body">
+        <h2 class="card-title">Upgrade Your Plan</h2>
+        <p class="text-base-content/60">
+          Choose a plan that works for your monitoring needs
+        </p>
+        <div class="mt-4 space-y-3">
+          <%= for plan <- @available_plans do %>
+            <div class="flex items-center space-x-2 rounded-md border p-3">
+              <input
+                type="radio"
+                name="plan"
+                id={plan.name}
+                class="radio radio-primary"
+                checked={plan.current}
+              />
+              <label for={plan.name} class="flex flex-1 flex-col cursor-pointer">
+                <span class="font-medium">{plan.name}</span>
+                <span class="text-xs text-base-content/60">
+                  ${plan.price}/month - {plan.description}
+                </span>
+              </label>
+              <span class="font-medium">${plan.price}</span>
+            </div>
+          <% end %>
+        </div>
+        <div class="card-actions mt-4">
+          <button class="btn btn-primary w-full">Upgrade Plan</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+<!-- Billing History -->
+  <div class="card bg-base-100 shadow-sm">
+    <div class="card-body">
+      <h2 class="card-title">Billing History</h2>
+      <p class="text-base-content/60">View and download your past invoices</p>
+      <div class="overflow-x-auto mt-4">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Description</th>
+              <th class="text-right">Amount</th>
+              <th class="text-right">Status</th>
+              <th class="text-right">Invoice</th>
+            </tr>
+          </thead>
+          <tbody>
+            <%= for bill <- @billing_history do %>
+              <tr>
+                <td>{bill.date}</td>
+                <td>{bill.description}</td>
+                <td class="text-right">${bill.amount}</td>
+                <td class="text-right">
+                  <span class="badge badge-success">{bill.status}</span>
+                </td>
+                <td class="text-right">
+                  <button class="btn btn-ghost btn-sm btn-square">
+                    <i class="fa-solid fa-download"></i>
+                  </button>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

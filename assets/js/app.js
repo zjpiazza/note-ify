@@ -2,6 +2,9 @@
 // to get started and then uncomment the line below.
 // import "./user_socket.js"
 
+// Import login page handling
+import "./login.js"
+
 // You can include dependencies in two ways.
 //
 // The simplest option is to put them in assets/vendor and
@@ -22,7 +25,13 @@ import {Socket} from "phoenix"
 import {LiveSocket} from "phoenix_live_view"
 import topbar from "../vendor/topbar"
 
-let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
+// Get CSRF token if available
+let csrfToken = ""
+const csrfElement = document.querySelector("meta[name='csrf-token']")
+if (csrfElement) {
+  csrfToken = csrfElement.getAttribute("content")
+}
+
 let liveSocket = new LiveSocket("/live", Socket, {
   longPollFallbackMs: 2500,
   params: {_csrf_token: csrfToken}

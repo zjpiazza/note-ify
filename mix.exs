@@ -48,13 +48,17 @@ defmodule NoteIfy.MixProject do
        compile: false,
        depth: 1},
       {:swoosh, "~> 1.5"},
-      {:finch, "~> 0.13"},
+      {:finch, "~> 0.17.0"},
       {:telemetry_metrics, "~> 1.0"},
       {:telemetry_poller, "~> 1.0"},
       {:gettext, "~> 0.26"},
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.1.1"},
-      {:bandit, "~> 1.5"}
+      {:bandit, "~> 1.5"},
+      {:clerk, "~> 1.1"},
+      {:plug_cowboy, "~> 2.5"},
+      {:dotenv, "~> 3.0.0", only: [:dev, :test]},
+      {:credo, "~> 1.7", only: [:dev, :test], runtime: false}
     ]
   end
 

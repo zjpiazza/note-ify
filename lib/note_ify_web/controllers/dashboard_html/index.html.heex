@@ -1,0 +1,202 @@
+<!-- Page content -->
+<div class="p-6 bg-base-200 min-h-screen">
+  <!-- Welcome Card -->
+  <div class="card bg-base-100 shadow-sm mb-6">
+    <div class="card-body flex flex-col sm:flex-row sm:items-center sm:justify-between">
+      <div>
+        <h1 class="text-2xl font-bold">Welcome back, {@user.name}! 👋</h1>
+        <p class="text-base-content/60">
+          Your next postcard is scheduled to be sent on {@user.next_postcard_date}
+        </p>
+      </div>
+      <div class="flex items-center gap-2 mt-4 sm:mt-0">
+        <button class="btn btn-outline btn-sm gap-1">
+          <i class="fa-solid fa-bell"></i>
+          <span class="hidden sm:inline">Notifications</span>
+        </button>
+        <button class="btn btn-primary btn-sm">View Postcard Preview</button>
+      </div>
+    </div>
+  </div>
+  
+<!-- Stats Cards -->
+  <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-6">
+    <div class="card bg-base-100 shadow-sm">
+      <div class="card-body p-4">
+        <div class="flex justify-between items-center">
+          <h3 class="text-sm font-medium">Total Alerts</h3>
+          <i class="fa-solid fa-triangle-exclamation text-base-content/60"></i>
+        </div>
+        <div class="text-2xl font-bold mt-2">{@stats.total_alerts}</div>
+        <p class="text-xs text-base-content/60">
+          {@stats.alerts_increase} from last month
+        </p>
+      </div>
+    </div>
+    <div class="card bg-base-100 shadow-sm">
+      <div class="card-body p-4">
+        <div class="flex justify-between items-center">
+          <h3 class="text-sm font-medium">Postcards Sent</h3>
+          <i class="fa-solid fa-envelope text-base-content/60"></i>
+        </div>
+        <div class="text-2xl font-bold mt-2">{@stats.postcards_sent}</div>
+        <p class="text-xs text-base-content/60">
+          {@stats.postcards_scheduled} scheduled for this week
+        </p>
+      </div>
+    </div>
+    <div class="card bg-base-100 shadow-sm">
+      <div class="card-body p-4">
+        <div class="flex justify-between items-center">
+          <h3 class="text-sm font-medium">Active Webhooks</h3>
+          <i class="fa-solid fa-server text-base-content/60"></i>
+        </div>
+        <div class="text-2xl font-bold mt-2">{@stats.active_webhooks}</div>
+        <p class="text-xs text-base-content/60">
+          {@stats.webhooks_with_alerts} received alerts today
+        </p>
+      </div>
+    </div>
+    <div class="card bg-base-100 shadow-sm">
+      <div class="card-body p-4">
+        <div class="flex justify-between items-center">
+          <h3 class="text-sm font-medium">Delivery Rate</h3>
+          <i class="fa-solid fa-paper-plane text-base-content/60"></i>
+        </div>
+        <div class="text-2xl font-bold mt-2">{@stats.delivery_rate}</div>
+        <p class="text-xs text-base-content/60">
+          {@stats.delivery_change} from last month
+        </p>
+      </div>
+    </div>
+  </div>
+  
+<!-- Main Content -->
+  <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+    <!-- Left Column -->
+    <div class="flex flex-col gap-6">
+      <!-- Alert Feed -->
+      <div class="card bg-base-100 shadow-sm">
+        <div class="card-body">
+          <h2 class="card-title">Real-time Alert Feed</h2>
+          <p class="text-base-content/60">Live alerts from your monitoring systems</p>
+          <div class="overflow-y-auto h-[400px] mt-4">
+            <div class="space-y-4">
+              <%= for alert <- @alerts do %>
+                <div class="border rounded-lg p-3">
+                  <div class="flex items-center justify-between">
+                    <div class="font-medium">{alert.title}</div>
+                    <span class="badge badge-primary">{alert.severity}</span>
+                  </div>
+                  <div class="text-sm text-base-content/60 mt-2">{alert.description}</div>
+                  <div class="flex items-center justify-between text-xs mt-2">
+                    <span class="text-base-content/60">{alert.source}</span>
+                    <span class="text-base-content/60">{alert.time}</span>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+<!-- Recent Activity -->
+      <div class="card bg-base-100 shadow-sm">
+        <div class="card-body">
+          <h2 class="card-title">Recent Activity</h2>
+          <p class="text-base-content/60">Latest actions and updates from your account</p>
+          <div class="space-y-4 mt-4">
+            <%= for activity <- @recent_activities do %>
+              <div class="flex items-start gap-4">
+                <div class="avatar">
+                  <div class="w-8 h-8 rounded bg-primary/10 flex items-center justify-center">
+                    <span class="text-lg">{activity.icon}</span>
+                  </div>
+                </div>
+                <div class="flex-1 space-y-1">
+                  <p class="text-sm">{activity.description}</p>
+                  <p class="text-xs text-base-content/60">{activity.time}</p>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+<!-- Right Column - Postcard Preview -->
+    <div class="card bg-base-100 shadow-sm">
+      <div class="card-body">
+        <h2 class="card-title">Next Postcard Preview</h2>
+        <p class="text-base-content/60">
+          Preview of your upcoming alert summary postcard
+        </p>
+        <div class="flex flex-col gap-4 mt-4">
+          <div class="postcard mx-auto w-full max-w-md overflow-hidden rounded-lg p-6 shadow-md">
+            <div class="postcard-stamp">📮</div>
+            <div class="mb-4 border-b border-dashed border-gray-400 pb-2">
+              <div class="flex justify-between">
+                <div class="text-sm">TO: {@next_postcard.to}</div>
+                <div class="text-sm italic text-gray-600">{@next_postcard.date}</div>
+              </div>
+            </div>
+            <div class="font-mono text-sm">
+              <p class="font-bold">
+                WEEKLY ALERT SUMMARY: {@next_postcard.summary_period}
+              </p>
+              <p class="mt-2">-------------------------------</p>
+              <%= for alert <- @next_postcard.alerts do %>
+                <p class="mt-1">⚠️ {alert}</p>
+              <% end %>
+              <p class="mt-2">-------------------------------</p>
+              <p class="mt-2">Hope you've fixed these by now! 😊</p>
+              <p class="mt-1">Yours truly,</p>
+              <p class="mt-1">note-ify</p>
+            </div>
+          </div>
+          <div class="flex justify-center gap-2">
+            <button class="btn btn-outline btn-sm gap-1">
+              <i class="fa-solid fa-download"></i>
+              <span>Download</span>
+            </button>
+            <button class="btn btn-outline btn-sm gap-1">
+              <i class="fa-solid fa-share"></i>
+              <span>Share</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .postcard {
+      background-color: #fff9c4;
+      transform: rotate(-2deg);
+      position: relative;
+  }
+  .postcard::after {
+      content: "";
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 50px;
+      height: 50px;
+      opacity: 0.7;
+  }
+  .postcard-stamp {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 70px;
+      height: 90px;
+      background-color: #f1f5f9;
+      border: 1px dashed #94a3b8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform: rotate(5deg);
+      font-size: 2rem;
+  }
+</style>

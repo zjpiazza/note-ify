@@ -1,0 +1,324 @@
+<!-- Page content -->
+<div class="p-6 bg-base-200 min-h-screen">
+  <div class="flex flex-col gap-2 mb-6">
+    <h1 class="text-3xl font-bold">Settings</h1>
+    <p class="text-base-content/60">Manage your account settings and preferences</p>
+  </div>
+
+  <div role="tablist" class="tabs tabs-bordered max-w-md mb-6">
+    <input
+      type="radio"
+      name="settings_tabs"
+      role="tab"
+      class="tab"
+      aria-label="Mailing Address"
+      checked
+    />
+    <div role="tabpanel" class="tab-content pt-6">
+      <div class="card bg-base-100 shadow-sm">
+        <div class="card-body">
+          <h2 class="card-title">Mailing Address</h2>
+          <p class="text-base-content/60">Where should we send your alert postcards?</p>
+          <div class="space-y-4 mt-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="form-control">
+                <label class="label">
+                  <span class="label-text">First name</span>
+                </label>
+                <input
+                  type="text"
+                  placeholder="John"
+                  class="input input-bordered"
+                  value={@user.first_name}
+                />
+              </div>
+              <div class="form-control">
+                <label class="label">
+                  <span class="label-text">Last name</span>
+                </label>
+                <input
+                  type="text"
+                  placeholder="Doe"
+                  class="input input-bordered"
+                  value={@user.last_name}
+                />
+              </div>
+            </div>
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text">Company (Optional)</span>
+              </label>
+              <input
+                type="text"
+                placeholder="Acme Inc."
+                class="input input-bordered"
+                value={@user.company}
+              />
+            </div>
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text">Address line 1</span>
+              </label>
+              <input
+                type="text"
+                placeholder="123 Main St"
+                class="input input-bordered"
+                value={@address.line1}
+              />
+            </div>
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text">Address line 2 (Optional)</span>
+              </label>
+              <input
+                type="text"
+                placeholder="Apt 4B"
+                class="input input-bordered"
+                value={@address.line2}
+              />
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div class="form-control">
+                <label class="label">
+                  <span class="label-text">City</span>
+                </label>
+                <input
+                  type="text"
+                  placeholder="New York"
+                  class="input input-bordered"
+                  value={@address.city}
+                />
+              </div>
+              <div class="form-control">
+                <label class="label">
+                  <span class="label-text">State/Province</span>
+                </label>
+                <input
+                  type="text"
+                  placeholder="NY"
+                  class="input input-bordered"
+                  value={@address.state}
+                />
+              </div>
+              <div class="form-control">
+                <label class="label">
+                  <span class="label-text">ZIP/Postal code</span>
+                </label>
+                <input
+                  type="text"
+                  placeholder="10001"
+                  class="input input-bordered"
+                  value={@address.postal_code}
+                />
+              </div>
+            </div>
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text">Country</span>
+              </label>
+              <select class="select select-bordered">
+                <option value="us" selected={@address.country == "us"}>
+                  United States
+                </option>
+                <option value="ca" selected={@address.country == "ca"}>Canada</option>
+                <option value="uk" selected={@address.country == "uk"}>
+                  United Kingdom
+                </option>
+                <option value="au" selected={@address.country == "au"}>Australia</option>
+              </select>
+            </div>
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text">Phone number (Optional)</span>
+              </label>
+              <input
+                type="text"
+                placeholder="+1 (555) 123-4567"
+                class="input input-bordered"
+                value={@user.phone}
+              />
+            </div>
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text">Special delivery instructions (Optional)</span>
+              </label>
+              <textarea class="textarea textarea-bordered" placeholder="Leave with doorman, etc.">{@address.delivery_instructions}</textarea>
+            </div>
+          </div>
+          <div class="card-actions mt-4">
+            <button class="btn btn-primary">Save Address</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <input type="radio" name="settings_tabs" role="tab" class="tab" aria-label="Preferences" />
+    <div role="tabpanel" class="tab-content pt-6">
+      <div class="card bg-base-100 shadow-sm">
+        <div class="card-body">
+          <h2 class="card-title">Postcard Preferences</h2>
+          <p class="text-base-content/60">
+            Customize how and when you receive your alert postcards
+          </p>
+          <div class="space-y-6 mt-4">
+            <div class="space-y-4">
+              <h3 class="text-lg font-medium">Delivery Schedule</h3>
+              <div class="grid gap-4">
+                <div class="flex items-center justify-between">
+                  <label class="flex flex-col gap-1 cursor-pointer">
+                    <span>Weekly Summaries</span>
+                    <span class="text-sm text-base-content/60">
+                      Send a postcard every week with alert summaries
+                    </span>
+                  </label>
+                  <input
+                    type="checkbox"
+                    class="toggle toggle-primary"
+                    checked={@preferences.weekly_summaries}
+                  />
+                </div>
+                <div class="flex items-center justify-between">
+                  <label class="flex flex-col gap-1 cursor-pointer">
+                    <span>Monthly Summaries</span>
+                    <span class="text-sm text-base-content/60">
+                      Send a monthly digest of all alerts
+                    </span>
+                  </label>
+                  <input
+                    type="checkbox"
+                    class="toggle toggle-primary"
+                    checked={@preferences.monthly_summaries}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="space-y-4">
+              <h3 class="text-lg font-medium">Postcard Design</h3>
+              <div class="grid gap-4">
+                <div class="form-control">
+                  <label class="label">
+                    <span class="label-text">Postcard Template</span>
+                  </label>
+                  <select class="select select-bordered">
+                    <option value="classic" selected={@preferences.postcard_template == "classic"}>
+                      Classic Alert
+                    </option>
+                    <option value="retro" selected={@preferences.postcard_template == "retro"}>
+                      Retro Computing
+                    </option>
+                    <option value="minimal" selected={@preferences.postcard_template == "minimal"}>
+                      Minimalist
+                    </option>
+                    <option value="fun" selected={@preferences.postcard_template == "fun"}>
+                      Fun & Colorful
+                    </option>
+                  </select>
+                </div>
+                <div class="flex items-center justify-between">
+                  <label class="flex flex-col gap-1 cursor-pointer">
+                    <span>Color Printing</span>
+                    <span class="text-sm text-base-content/60">
+                      Print postcards in full color (additional fee may apply)
+                    </span>
+                  </label>
+                  <input
+                    type="checkbox"
+                    class="toggle toggle-primary"
+                    checked={@preferences.color_printing}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="space-y-4">
+              <h3 class="text-lg font-medium">Alert Filtering</h3>
+              <div class="grid gap-4">
+                <div class="flex items-center justify-between">
+                  <label class="flex flex-col gap-1 cursor-pointer">
+                    <span>Critical Alerts Only</span>
+                    <span class="text-sm text-base-content/60">
+                      Only include critical severity alerts in postcards
+                    </span>
+                  </label>
+                  <input
+                    type="checkbox"
+                    class="toggle toggle-primary"
+                    checked={@preferences.critical_alerts_only}
+                  />
+                </div>
+                <div class="flex items-center justify-between">
+                  <label class="flex flex-col gap-1 cursor-pointer">
+                    <span>Include Resolved Alerts</span>
+                    <span class="text-sm text-base-content/60">
+                      Include alerts that were resolved before postcard was sent
+                    </span>
+                  </label>
+                  <input
+                    type="checkbox"
+                    class="toggle toggle-primary"
+                    checked={@preferences.include_resolved_alerts}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-actions mt-4">
+            <button class="btn btn-primary">Save Preferences</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <input type="radio" name="settings_tabs" role="tab" class="tab" aria-label="Account" />
+    <div role="tabpanel" class="tab-content pt-6">
+      <div class="card bg-base-100 shadow-sm">
+        <div class="card-body">
+          <h2 class="card-title">Account Settings</h2>
+          <p class="text-base-content/60">Manage your account details and security</p>
+          <div class="space-y-4 mt-4">
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text">Email address</span>
+              </label>
+              <input type="email" value={@user.email} class="input input-bordered" readonly />
+            </div>
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text">Display name</span>
+              </label>
+              <input
+                type="text"
+                placeholder="John Doe"
+                class="input input-bordered"
+                value={@user.name}
+              />
+            </div>
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text">Current password</span>
+              </label>
+              <input type="password" class="input input-bordered" />
+            </div>
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text">New password</span>
+              </label>
+              <input type="password" class="input input-bordered" />
+            </div>
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text">Confirm new password</span>
+              </label>
+              <input type="password" class="input input-bordered" />
+            </div>
+          </div>
+          <div class="card-actions justify-between mt-4">
+            <button class="btn btn-outline">Cancel</button>
+            <button class="btn btn-primary">Save Changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
